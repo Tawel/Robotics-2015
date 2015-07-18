@@ -12,7 +12,7 @@
 #include <iostream>
 #include <vector>
 #include <set>
-#include "cellcoordinate.h"
+#include "cell.h"
 #include "ConfigurationManager.h"
 #include "wayPoint.h"
 
@@ -27,7 +27,7 @@ struct grid_data
 	double h_val;
 	double g_val;
 	double f_val;
-	cell_coordinate parent;
+	cell parent;
 //	cell_coordinate current;
 };
 
@@ -47,7 +47,7 @@ public:
 	vector<vector<grid_data> > convertMapToGrid(const char* filename, double map_resolution, double grid_resolution);
 	void thickenMap(const char* filename, int thickenSizeCM);
 	void createGrids(const char* originalMapFile, double map_resolution, double grid_resolution);
-	double checkNearestObs(cell_coordinate point, double angle);
+	double checkNearestObs(cell point, double angle);
 
 	virtual ~Map();
 };

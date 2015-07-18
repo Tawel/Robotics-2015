@@ -19,13 +19,13 @@ class Particle {
 
 private:
     // Variables
-	cell_coordinate _cell;
+	cell _cell;
     double _Teta;
     double _Belief;
 
 
 public:
-    Particle(cell_coordinate cell, double dYaw);
+    Particle(cell cell, double dYaw);
 
     // Properties
     double getBelief();

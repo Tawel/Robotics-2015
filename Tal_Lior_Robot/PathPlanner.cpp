@@ -9,21 +9,21 @@
 #include <stdlib.h>
 #include <math.h>
 
-PathPlanner::PathPlanner(vector<vector<grid_data> > grid, cell_coordinate start, cell_coordinate goal){
+PathPlanner::PathPlanner(vector<vector<grid_data> > grid, cell start, cell goal){
 	_grid = grid;
 	_start = start;
 	_goal = goal;
 //	_open_list.resize( _grid.size() * (_grid[0]).size());
 }
 
-double PathPlanner::heuristic_cost_estimate(cell_coordinate cell_from){
+double PathPlanner::heuristic_cost_estimate(cell cell_from){
 	int dx = abs(cell_from.x_Coordinate - _goal.x_Coordinate);
 	int dy = abs(cell_from.y_Coordinate - _goal.y_Coordinate);
 	double multiple_coordinates = dx^2 + dy^2;
     return sqrt (multiple_coordinates);
 }
 
-double PathPlanner::g_cost(cell_coordinate cell_from, cell_coordinate cell_to)
+double PathPlanner::g_cost(cell cell_from, cell cell_to)
 {
 	if(( cell_from.x_Coordinate != cell_to.x_Coordinate) && ( cell_from.y_Coordinate != cell_to.y_Coordinate))
 		{
@@ -45,7 +45,7 @@ void PathPlanner::fill_heuristic( )
 		{
 			if(_grid[i][j].cell_color == 0){
 				//cell_coordinate cl(i, j);
-				cell_coordinate cl(j, i);
+				cell cl(j, i);
 				hVal = heuristic_cost_estimate(cl);
 				_grid[i][j].h_val = hVal;
 			}
@@ -53,7 +53,7 @@ void PathPlanner::fill_heuristic( )
 	}
 }
 
-void PathPlanner::fill_g_f(cell_coordinate cell_from){
+void PathPlanner::fill_g_f(cell cell_from){
 	int i,j;
 	double currentGval;
 	bool in_open_list = false;
@@ -70,7 +70,7 @@ void PathPlanner::fill_g_f(cell_coordinate cell_from){
 //				if (i == _goal.x_Coordinate && j == _goal.y_Coordinate )
 				if (i == _goal.y_Coordinate && j == _goal.x_Coordinate )
 				{
-					cell_coordinate cl2(j, i);
+					cell cl2(j, i);
 					_grid[i][j].parent.x_Coordinate = cell_from.x_Coordinate;
 					_grid[i][j].parent.y_Coordinate = cell_from.y_Coordinate;
 					_grid[i][j].g_val = 0;
@@ -83,7 +83,7 @@ void PathPlanner::fill_g_f(cell_coordinate cell_from){
 					if((_grid[i][j].cell_color == 0)&&(((j != cell_from.x_Coordinate)||(i != cell_from.y_Coordinate)))&&(!is_close))
 					{
 						//cell_coordinate cl(i, j);
-					    cell_coordinate cl(j, i);
+					    cell cl(j, i);
 						currentGval = g_cost(cell_from, cl);
 						in_open_list = check_in_set(_open_list,i,j);
 						if(in_open_list){
@@ -109,9 +109,9 @@ void PathPlanner::fill_g_f(cell_coordinate cell_from){
 }
 
 
-bool PathPlanner::check_in_set(set<cell_coordinate> nodes_set, int row_index, int cols_index){
-	cell_coordinate current_cell;
-	set<cell_coordinate>::iterator it; //= nodes_set.begin();
+bool PathPlanner::check_in_set(set<cell> nodes_set, int row_index, int cols_index){
+	cell current_cell;
+	set<cell>::iterator it; //= nodes_set.begin();
 //	it = nodes_set.end();
 //	++it;
 
@@ -134,14 +134,14 @@ PathPlanner::~PathPlanner() {
 	// TODO Auto-generated destructor stub
 }
 
-vector<cell_coordinate> PathPlanner::astar()
+vector<cell> PathPlanner::astar()
 {
 	this->fill_heuristic();
 	this->fill_g_f(_start);
 	int size = _open_list.size();
 	while (!_open_list.empty())
 	{
-		cell_coordinate lowest_f_cell = find_lowest_f_score();
+		cell lowest_f_cell = find_lowest_f_score();
 		if (lowest_f_cell.x_Coordinate == _goal.x_Coordinate &&
 		    (lowest_f_cell.y_Coordinate == _goal.y_Coordinate))
 		{
@@ -149,18 +149,18 @@ vector<cell_coordinate> PathPlanner::astar()
 			return _path;
 		}
 
-		std::set<cell_coordinate>::iterator it_openlist;
-		std::set<cell_coordinate>::iterator it_closelist;
+		std::set<cell>::iterator it_openlist;
+		std::set<cell>::iterator it_closelist;
 		_open_list.erase(lowest_f_cell);
 		fill_g_f(lowest_f_cell);
 	}
 
 	return _path;
 }
-cell_coordinate PathPlanner::find_lowest_f_score(){
-	set<cell_coordinate>::iterator it;
-	cell_coordinate min_cell = *_open_list.begin();
-	cell_coordinate current_cell;
+cell PathPlanner::find_lowest_f_score(){
+	set<cell>::iterator it;
+	cell min_cell = *_open_list.begin();
+	cell current_cell;
 
 	for (it = _open_list.begin(); it != _open_list.end(); ++it) {
 		current_cell = *it;
@@ -180,14 +180,14 @@ void PathPlanner::reconstruct_path()
 {
 	double current_x_coordinate, current_y_coordinate, pre_x_coordinate, pre_y_coordinate;
 	int i = 1;
-	vector<cell_coordinate> path;
+	vector<cell> path;
 
 	//set<cell_coordinate> path;
 
 	current_x_coordinate = _goal.x_Coordinate;
 	current_y_coordinate = _goal.y_Coordinate;
 
-	cell_coordinate currCell(current_x_coordinate, current_y_coordinate);
+	cell currCell(current_x_coordinate, current_y_coordinate);
 
 	while ((current_x_coordinate != _start.x_Coordinate)||(current_y_coordinate != _start.y_Coordinate)){
 		i++;
@@ -210,7 +210,7 @@ void PathPlanner::reconstruct_path()
 	current_x_coordinate = _goal.x_Coordinate;
 	current_y_coordinate = _goal.y_Coordinate;
 
-	cell_coordinate currCell2(current_x_coordinate, current_y_coordinate);
+	cell currCell2(current_x_coordinate, current_y_coordinate);
 
 	path[0] = currCell2;
 
@@ -221,7 +221,7 @@ void PathPlanner::reconstruct_path()
 
 		current_x_coordinate = _grid[pre_y_coordinate][pre_x_coordinate].parent.x_Coordinate;
 		current_y_coordinate = _grid[pre_y_coordinate][pre_x_coordinate].parent.y_Coordinate;
-		cell_coordinate currCell3(current_x_coordinate, current_y_coordinate);
+		cell currCell3(current_x_coordinate, current_y_coordinate);
 		path[i] = currCell3;
 	}
 

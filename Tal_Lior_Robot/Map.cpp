@@ -134,7 +134,7 @@ void Map::createGrids(const char* originalMapFile, double map_resolution, double
 										grid_resolution);
 }
 
-double Map::checkNearestObs(cell_coordinate point, double angle){
+double Map::checkNearestObs(cell point, double angle){
 
 	int roundedAngle = angle;
 	if (roundedAngle % 45 < 22.5) {

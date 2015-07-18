@@ -47,11 +47,11 @@ int main()
 	int start_y = cm.start_y / resolution_relation;
 	int end_x = cm.target_x / resolution_relation;
 	int end_y = cm.target_y / resolution_relation;
-	cell_coordinate start_point(start_x, start_y);
-	cell_coordinate end_point(end_x, end_y);
+	cell start_point(start_x, start_y);
+	cell end_point(end_x, end_y);
 	PathPlanner pathPlanner(map._thickened_grid, start_point, end_point);
 
-	vector<cell_coordinate> ass_star_result = pathPlanner.astar();
+	vector<cell> ass_star_result = pathPlanner.astar();
 
 	cout << "THE RESULT IS: " << ass_star_result.size() << endl;
 

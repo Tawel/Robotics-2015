@@ -9,7 +9,7 @@
 #include <math.h>
 using namespace std;
 
-WaypointsManager::WaypointsManager(vector<cell_coordinate> path, double gridResolution, double mapResolution)
+WaypointsManager::WaypointsManager(vector<cell> path, double gridResolution, double mapResolution)
 {
 	astar_path = path;
 	_gridResolution = gridResolution;
@@ -75,7 +75,7 @@ void WaypointsManager::build_way_point_vector(int num_of_cells)
 	}
 }
 
-double WaypointsManager::calc_yaw(double m, cell_coordinate cell_from, cell_coordinate cell_to)
+double WaypointsManager::calc_yaw(double m, cell cell_from, cell cell_to)
 {
 	double angle;
 
@@ -182,7 +182,7 @@ double WaypointsManager::calc_yaw(double m, cell_coordinate cell_from, cell_coor
 //	}
 }
 
-double WaypointsManager::calc_incline(cell_coordinate cell_from, cell_coordinate cell_to)
+double WaypointsManager::calc_incline(cell cell_from, cell cell_to)
 {
 	is_verticle = 0;
 	if(cell_from.x_Coordinate == cell_to.x_Coordinate)

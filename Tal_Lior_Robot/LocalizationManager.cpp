@@ -8,7 +8,7 @@
 #include "LocalizationManager.h"
 
 LocalizationManager::LocalizationManager() {
-	cell_coordinate cell(0,0);
+	cell cell(0,0);
     Particle* p = new Particle(cell, 0);
     arrParticles.push_front(*p);
 }
@@ -60,7 +60,7 @@ void LocalizationManager::createChildren(double dX, double dY, double dRange, in
                 double randYaw = ((double) (rand() % 1000) / 1000.0);
 
                 // Create new cell coordiante by new coordinates
-                cell_coordinate new_cell(dX + randX, dY + randY);
+                cell new_cell(dX + randX, dY + randY);
                 arrParticles.push_front(Particle(new_cell, randYaw));
             }
         }

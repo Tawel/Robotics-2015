@@ -7,7 +7,7 @@
 
 #include "Particle.h"
 
-Particle::Particle(cell_coordinate cell, double dYaw){
+Particle::Particle(cell cell, double dYaw){
     this->_cell.x_Coordinate = cell.x_Coordinate;
     this->_cell.y_Coordinate = cell.y_Coordinate;
     this->_Teta = dYaw;
