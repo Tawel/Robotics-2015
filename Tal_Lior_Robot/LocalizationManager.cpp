@@ -13,7 +13,7 @@ LocalizationManager::LocalizationManager() {
     arrParticles.push_front(*p);
 }
 
-// This function runs the particle filter algorithm
+// Updates particles, deleting/creating/altering as needed
 void LocalizationManager::update(double dX, double dY, double dTeta, double deltaX, double deltaY,
                 double deltaTeta, LaserProxy* pLaserProxy)
 {
@@ -26,7 +26,6 @@ void LocalizationManager::update(double dX, double dY, double dTeta, double delt
         // Calculate the belief
         double dBelief = iterator->update(deltaX, deltaY, deltaTeta, pLaserProxy);
 
-        // Copy the iterator so we can delete the original one if we would need to
         list<Particle>::iterator tempIterator = iterator;
         tempIterator++;
 
@@ -37,7 +36,6 @@ void LocalizationManager::update(double dX, double dY, double dTeta, double delt
         }
         else if (dBelief > STANDARD)
         {
-            //createChildren(dX, dY, 0.3, 5);
         	createChildren(dX, dY, PARTICLE_RANGE, PARTICLE_NUM_TO_CREATE);
         }
 

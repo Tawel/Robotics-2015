@@ -14,12 +14,11 @@ Particle::Particle(cell cell, double dYaw){
     this->_Belief = 1;
 }
 
-// This function update the particle according to the delats and the laser
+// This function update the particle according to the deltas and the laser
 double Particle::update(double deltaX, double deltaY, double deltaTeta , LaserProxy* laser)
 {
     // Variable Definition
     double predBel;
-    //double normalizeFactor = 1.2;
 
     // Update the particle position
     _cell.x_Coordinate += deltaX;
@@ -32,6 +31,7 @@ double Particle::update(double deltaX, double deltaY, double deltaTeta , LaserPr
     return _Belief;
 }
 
+// Probability by move
 double Particle::probMov(double deltaX, double deltaY, double deltaTeta)
 {
     double dist = sqrt(pow(deltaX, 2) + pow(deltaY, 2));
@@ -48,16 +48,8 @@ double Particle::probMov(double deltaX, double deltaY, double deltaTeta)
 	if(dist < TRH_DIS && deltaTeta == 0)
 		pro = 1;
 	return pro;
-
-//	if ((dist < TOP_DISTANCE) && (abs(deltaTeta) < TOP_DELTA_TETA))
-//    {
-//        return 1;
-//    }
-//
-//    return 0;
 }
 
-// This function is the belief property
 double Particle::getBelief()
 {
     return (this->_Belief);

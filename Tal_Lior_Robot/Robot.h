@@ -5,7 +5,6 @@
 #include <libplayerc++/playerc++.h>
 #include "Defines.h"
 #include "ConfigurationManager.h"
-//#define DISTANCE_FROM_OBSTACLES 0.6
 
 using namespace PlayerCc;
 class Robot {

@@ -39,11 +39,11 @@ void Manager::run()
 
 		_curr->startCond();
 
-		// While we haven't got to the current waypoint keep moving there
+		// While we haven't got to the needed way point keep moving there
 		while (true){
 
 
-			// If the current behavior can't run
+			// If the current behavior can't run, execute the next vehavior
 			if(_curr->stopCond())
 			{
 				// Perform the next behavior according to the plan
@@ -51,6 +51,7 @@ void Manager::run()
 
 			    _robot->Read();
 
+			    // if we hit the way point break, and go on to the next way point
 				if (_wayPointsManager->isInWayPoint(_robot->getXpos(),_robot->getYpos()))
 				{
 					break;
@@ -60,7 +61,7 @@ void Manager::run()
 					break;
 			}
 
-			// Do the current's behavior action
+			// Do the current behavior's action
 			_curr->action();
 
 			_robot->Read();

@@ -21,7 +21,7 @@
 #define TURN_LEFT_SPEED 0.3
 #define MOVE_SPEED 0.1
 
-#define TOLLERANCE 10
+#define TOLERANCE 10
 
 // Behaviors
 #define BEHAVIORS_COUNT 2

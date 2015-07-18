@@ -129,58 +129,6 @@ double WaypointsManager::calc_yaw(double m, cell cell_from, cell cell_to)
 			return (angle);
 		}
 	}
-
-//	double angle;
-//
-//	if(!is_verticle)
-//	{
-//		angle = 180 * atan(m) / M_PI;
-//	}
-//
-//	if (is_verticle)
-//	{
-//		if (cell_to.y_Coordinate > cell_from.y_Coordinate)
-//		{
-//			return (90);
-//		}
-//		else
-//		{
-//			return (270);
-//		}
-//	}
-//	else if ( m == 0)
-//	{
-//		if (cell_to.x_Coordinate > cell_from.x_Coordinate)
-//		{
-//			return (angle);
-//		}
-//		else
-//		{
-//			return (180 + angle);
-//		}
-//	}
-//	else if (m > 0)
-//	{
-//		if (cell_to.y_Coordinate > cell_from.y_Coordinate)
-//		{
-//			return (angle);
-//		}
-//		else
-//		{
-//			return (180 + angle);
-//		}
-//	}
-//	else
-//	{
-//		if (cell_to.y_Coordinate > cell_from.y_Coordinate)
-//		{
-//			return (90 + angle);
-//		}
-//		else
-//		{
-//			return (360 - angle);
-//		}
-//	}
 }
 
 double WaypointsManager::calc_incline(cell cell_from, cell cell_to)
@@ -189,7 +137,6 @@ double WaypointsManager::calc_incline(cell cell_from, cell cell_to)
 	if(cell_from.x_Coordinate == cell_to.x_Coordinate)
 	{
 		is_verticle = 1;
-		// TODO- CHECK if ok
 		return(9999);
 	}
 	else
@@ -216,13 +163,14 @@ bool WaypointsManager::isInWayPoint(double x,double y)
 	double dy = nextWayPoint.y_Coordinate - y;
 	double distance = sqrt(pow(dx, 2) + pow(dy, 2));
 
-	cout << "way point x"<< " " << nextWayPoint.x_Coordinate << " " << "x" << " " << x << endl;
-	cout << "way point y" << " " << nextWayPoint.y_Coordinate << " " << "y" << " "  << y << endl;
-	cout << "yaw" << nextWayPoint.yaw <<  endl;
-	cout << (distance) << endl;
+	cout << "Next way point x: "<< nextWayPoint.x_Coordinate << " ---> current x: " << x << endl;
+	cout << "Next way point y: "<< nextWayPoint.y_Coordinate << " ---> current y: " << y << endl;
+	cout << "Next way point yaw" << nextWayPoint.yaw <<  endl;
+	cout << "Distance to next way point: " << (distance) << endl;
+	cout << endl;
 
-	//if (distance*_gridResolution <= TOLLERANCE)
-	if (distance*_gridResolution <= TOLLERANCE)
+	// Checking if the robot hit the way point, considering tolerance
+	if (distance*_gridResolution <= TOLERANCE)
 	{
 		return true;
 	}

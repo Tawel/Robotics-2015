@@ -1,7 +1,7 @@
 /*
  * main.cpp
  *
- *  Created on: Dec 14, 2014
+ *  Created on: Jun 14, 2015
  *      Author: user
  */
 
@@ -30,14 +30,17 @@ int main()
 	cout << map._original_grid.size() <<  "Grid Row" << endl;
 
 	Robot robot("localhost",6665, &ConfigMgr, map._original_grid.size());
-	//Robot robot("10.10.245.64",6665, &cm, map._original_grid.size());
+	//Robot robot("10.10.245.64",6665, &ConfigMgr, map._original_grid.size());
 
 
-	// printing
+	// printing original map
 	printMatrix(map._original_grid);
+
 	for (int var = 0; var < 10; var++) {
 		cout << endl << "";
 	}
+
+	// printing thick map
 	printMatrix(map._thickened_grid);
 
 

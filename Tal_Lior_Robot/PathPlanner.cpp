@@ -1,7 +1,7 @@
 /*
  * PathPlanner.cpp
  *
- *  Created on: Jun 7, 2015
+ *  Created on: Jun 22, 2015
  *      Author: user
  */
 
@@ -13,7 +13,6 @@ PathPlanner::PathPlanner(vector<vector<grid_data> > grid, cell start, cell goal)
 	_grid = grid;
 	_start = start;
 	_goal = goal;
-//	_open_list.resize( _grid.size() * (_grid[0]).size());
 }
 
 double PathPlanner::heuristic_cost_estimate(cell cell_from){

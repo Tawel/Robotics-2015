@@ -19,7 +19,7 @@ void Map::encodeOneStep(const char* filename, std::vector<unsigned char> image, 
 	//if there's an error, display it
 	if (error)
 		std::cout << "encoder error " << error << ": "
-				<< lodepng_error_text(error) << std::endl;
+		<< lodepng_error_text(error) << std::endl;
 }
 
 void Map::decodeOneStep(const char* filename) {
@@ -32,9 +32,9 @@ void Map::decodeOneStep(const char* filename) {
 	//if there's an error, display it
 	if (error)
 		std::cout << "decoder error " << error << ": "
-				<< lodepng_error_text(error) << std::endl;
+		<< lodepng_error_text(error) << std::endl;
 
-	//the pixels are now in the vector "image", 4 bytes per pixel, ordered RGBARGBA..., use it as texture, draw it, ...
+	// image displayed as vector (RGBA..)
 }
 void Map::thickenMap(const char* filename, int thickenSizeCM) {
 
@@ -46,25 +46,29 @@ void Map::thickenMap(const char* filename, int thickenSizeCM) {
 	unsigned error = lodepng::decode(image, width, height, filename);
 
 	//if there's an error, display it
- 	if (error)
+	if (error)
 		std::cout << "decoder error " << error << ": "
-				<< lodepng_error_text(error) << std::endl;
+		<< lodepng_error_text(error) << std::endl;
 
 	std::vector<unsigned char> newImage; //the raw pixels
-		newImage.resize(width * height * 4);
+
+	newImage.resize(width * height * 4);
+
+	// Initializing thick map
 	for (y = 0; y < height; y++)
 		for (x = 0; x < width; x++) {
-			 newImage[y * width * 4 + x * 4 + 0] = 255;
-			 newImage[y * width * 4 + x * 4 + 1] = 255;
-			 newImage[y * width * 4 + x * 4 + 2] = 255;
-			 newImage[y * width * 4 + x * 4 + 3] = 255;
+			newImage[y * width * 4 + x * 4 + 0] = 255;
+			newImage[y * width * 4 + x * 4 + 1] = 255;
+			newImage[y * width * 4 + x * 4 + 2] = 255;
+			newImage[y * width * 4 + x * 4 + 3] = 255;
 		}
 
+	// thickening map
 	for (y = 0; y < height; y++)
 		for (x = 0; x < width; x++) {
 			if (!(image[y * width * 4 + x * 4 + 0]
-					|| image[y * width * 4 + x * 4 + 1]
-					|| image[y * width * 4 + x * 4 + 2])){
+			            || image[y * width * 4 + x * 4 + 1]
+			                     || image[y * width * 4 + x * 4 + 2])){
 				for (i = y - thickenSizeCM; i <= y + thickenSizeCM; i++){
 					for (j = x - thickenSizeCM; j <= x + thickenSizeCM; j++){
 						if ((i>=0)&&(j>=0)&&(i<height)&&(j<width)){
@@ -72,10 +76,12 @@ void Map::thickenMap(const char* filename, int thickenSizeCM) {
 							newImage[i * width * 4 + j * 4 + 1] = 0;
 							newImage[i * width * 4 + j * 4 + 2] = 0;
 						}
-				}
+					}
 				}
 			}
 		}
+
+	// saving pic
 	encodeOneStep(THICKENED_MAP_NAME, newImage, width, height);
 }
 
@@ -103,8 +109,8 @@ vector<vector<grid_data> > Map::convertMapToGrid(const char* filename, double ma
 			for (i = y ; (i < y + resolution_relation)&&(is_black_found == 0); i++){
 				for (j = x ; (j < x + resolution_relation)&&(is_black_found == 0); j++){
 					if (!(image[i * width * 4 + j * 4 + 0]
-							|| image[i * width * 4 + j * 4 + 1]
-							|| image[i * width * 4 + j * 4 + 2])){
+					            || image[i * width * 4 + j * 4 + 1]
+					                     || image[i * width * 4 + j * 4 + 2])){
 						is_black_found = 1;
 						(grid[y / resolution_relation][x / resolution_relation]).cell_color = 1;
 					}
@@ -127,11 +133,11 @@ vector<vector<grid_data> > Map::convertMapToGrid(const char* filename, double ma
 
 void Map::createGrids(const char* originalMapFile, double map_resolution, double grid_resolution){
 	_original_grid = convertMapToGrid(originalMapFile,
-										map_resolution,
-										grid_resolution);
+			map_resolution,
+			grid_resolution);
 	_thickened_grid = convertMapToGrid(THICKENED_MAP_NAME,
-										map_resolution,
-										grid_resolution);
+			map_resolution,
+			grid_resolution);
 }
 
 double Map::checkNearestObs(cell point, double angle){
@@ -147,40 +153,40 @@ double Map::checkNearestObs(cell point, double angle){
 	int yDirection;
 
 	switch (roundedAngle%360) {
-		case 0:
-			xDirection = 1;
-			yDirection = 0;
-			break;
-		case 45:
-			xDirection = 1;
-			yDirection = 1;
-			break;
-		case 90:
-			xDirection = 0;
-			yDirection = 1;
-			break;
-		case 135:
-			xDirection = -1;
-			yDirection = 1;
-			break;
-		case 180:
-			xDirection = -1;
-			yDirection = 0;
-			break;
-		case 225:
-			xDirection = -1;
-			yDirection = -1;
-			break;
-		case 270:
-			xDirection = 0;
-			yDirection = -1;
-			break;
-		case 315:
-			xDirection = 1;
-			yDirection = -1;
-			break;
-		default:
-			return -1; // wrong angle
+	case 0:
+		xDirection = 1;
+		yDirection = 0;
+		break;
+	case 45:
+		xDirection = 1;
+		yDirection = 1;
+		break;
+	case 90:
+		xDirection = 0;
+		yDirection = 1;
+		break;
+	case 135:
+		xDirection = -1;
+		yDirection = 1;
+		break;
+	case 180:
+		xDirection = -1;
+		yDirection = 0;
+		break;
+	case 225:
+		xDirection = -1;
+		yDirection = -1;
+		break;
+	case 270:
+		xDirection = 0;
+		yDirection = -1;
+		break;
+	case 315:
+		xDirection = 1;
+		yDirection = -1;
+		break;
+	default:
+		return -1; // wrong angle
 	}
 
 	int x = point.x_Coordinate;
@@ -199,14 +205,9 @@ double Map::checkNearestObs(cell point, double angle){
 	if (xDirection == 0 || yDirection == 0) {
 		return counter*10;
 	} else {
-		return counter*14.14215; // sqrt(200)
+		return counter*14.14215;
 	}
 }
-
-//Map::Map() {
-//	// TODO Auto-generated constructor stub
-//
-//}
 
 Map::~Map() {
 	// TODO Auto-generated destructor stub
