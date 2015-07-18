@@ -1,0 +1,10 @@
+map_path: roboticLabMap.png
+start_x: 362
+start_y: 305
+yaw: 20
+target_x: 169
+target_y: 138
+robot_length: 30
+robot_width: 30
+map_resolution: 2.5
+grid_resolution: 10
