@@ -17,7 +17,6 @@ public:
 	bool startCond();
 	bool stopCond();
 	void action();
-	void print();
 	virtual ~GoToWayPoint();
 
 private:

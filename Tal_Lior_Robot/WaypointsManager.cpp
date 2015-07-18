@@ -16,6 +16,7 @@ WaypointsManager::WaypointsManager(vector<cell> path, double gridResolution, dou
 	_mapResolution = mapResolution;
 }
 
+// Creating way point every "num_of_cells" item on the path
 void WaypointsManager::build_way_point_vector(int num_of_cells)
 {
 	set<wayPoint>::iterator iter = wayPoints.begin();

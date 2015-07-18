@@ -11,32 +11,16 @@ Robot::Robot(char* ip, int port, ConfigurationManager* cm, int grid_rows) {
 	_grid_rows = grid_rows;
 
 	_pp->SetMotorEnable(true);
+
 	//For fixing Player's reading BUG
 	for(int i=0;i<15;i++)
 		Read();
-	//_pp->SetOdometry(cm->grid_resolution * ((double)cm->start_x / 100), cm->grid_resolution * ((double)cm->start_y / 100), cm->yaw * M_PI / 180 );
-	//_pp->SetOdometry(((double)cm->start_x / 100) / (cm->grid_resolution / cm->map_resolution) , ((double)cm->start_y / 100) / (cm->grid_resolution / cm->map_resolution), 90*M_PI/180); //cm->yaw * M_PI / 180 );
 
-	// (_cm->grid_resolution)
-	//_pp->SetOdometry(((double)cm->start_x / 100), 0, 90*M_PI/180);
-	//final
-	//_pp->SetOdometry(((double)cm->start_x / _cm->map_resolution), ((double)cm->start_y / _cm->map_resolution), cm->yaw*M_PI/180);
 	_pp->SetOdometry(((double)cm->start_x / (_cm->grid_resolution / _cm->map_resolution)/ (_cm->grid_resolution)), ((_grid_rows / _cm->grid_resolution) - (((double)cm->start_y) / (_cm->grid_resolution / _cm->map_resolution)/ (_cm->grid_resolution))) ,cm->yaw*M_PI/180);
 	cout << " x " << getXpos() << " y " << getYpos() << "yaw" << getYaw() << endl;
-//	for(int i=0;i<100;i++)
-//			getXpos();
-//			getYpos();
+
 	_pp->SetOdometry(((double)cm->start_x / (_cm->grid_resolution / _cm->map_resolution)/ (_cm->grid_resolution)), ((_grid_rows / _cm->grid_resolution) - (((double)cm->start_y) / (_cm->grid_resolution / _cm->map_resolution)/ (_cm->grid_resolution))) ,cm->yaw*M_PI/180);
 	cout << " x " << getXpos() << " y " << getYpos() << "yaw" << getYaw() << endl;
-	//_pp->SetOdometry(((double)cm->start_x / _cm->map_resolution), ((double)cm->start_y / _cm->map_resolution), 90*M_PI/180);
-			//cm->yaw * M_PI / 180 );
-
-
-
-
-
-	//((((_grid_rows / _cm->grid_resolution)) - ((double)cm->start_y) / (_cm->grid_resolution / _cm->map_resolution)/ (_cm->grid_resolution)))
-
 }
 
 void Robot::Read()
@@ -69,17 +53,16 @@ bool Robot::isForwardFree() {
 		return false;
 }
 
+// Getting the X position of the robot calculated with the right resolution
 double Robot::getXpos()
 {
 	return ((_pp->GetXPos()) * _cm->grid_resolution);
-	//return ((_pp->GetXPos()) / _cm->map_resolution);
 }
 
+// Getting the Y position of the robot calculated with the right resolution
 double Robot::getYpos()
 {
 	return (((_grid_rows / _cm->grid_resolution) - _pp->GetYPos()) * _cm->grid_resolution);
-//	return ((_grid_rows / _cm->grid_resolution -_pp->GetYPos()) * _cm->grid_resolution);
-	//return ((_grid_rows / _cm->grid_resolution -_pp->GetYPos()) / _cm->map_resolution);
 }
 
 double Robot::getYaw()
@@ -102,19 +85,19 @@ LaserProxy* Robot::getLaser()
 
 float Robot::getLaserDistance(int index)
 {
-    return _lp->GetRange(index);
+	return _lp->GetRange(index);
 }
 
 bool Robot::checkRange(int nStart, int nEnd)
 {
-    bool is_dis_Good = true;
+	bool is_Good = true;
 
-    for (int index = nStart; (index <= nEnd) && (is_dis_Good); index++)
-    {
-    	is_dis_Good = (this->getLaserDistance(index) > DISTANCE_TOLERANCE);
-    }
+	for (int index = nStart; (index <= nEnd) && (is_Good); index++)
+	{
+		is_Good = (this->getLaserDistance(index) > DISTANCE_TOLERANCE);
+	}
 
-    return (is_dis_Good);
+	return (is_Good);
 }
 
 
@@ -123,6 +106,7 @@ double Robot::getLaserSpec()
 	return(((_lp->GetMaxAngle() * 180 / M_PI) + 120 ) / 0.36);
 }
 
+// Driving "cmToMove" centimeters forward
 void Robot::drive(int cmToMove)
 {
 	_pc->Read();
@@ -146,7 +130,7 @@ void Robot::drive(int cmToMove)
 		cout << currX << endl;
 	}
 
-		_pp->SetSpeed(0.0,0.0);
+	_pp->SetSpeed(0.0,0.0);
 
 }
 

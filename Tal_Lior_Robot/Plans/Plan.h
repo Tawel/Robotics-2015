@@ -11,8 +11,6 @@
 #include "../Defines.h"
 #include "../Robot.h"
 #include "../behaviors/GoForward.h"
-#include "../behaviors/TurnLeft.h"
-#include "../behaviors/TurnRight.h"
 
 class Plan {
 

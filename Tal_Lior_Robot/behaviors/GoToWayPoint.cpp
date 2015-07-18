@@ -15,9 +15,9 @@ GoToWayPoint::~GoToWayPoint() {
 	// TODO Auto-generated destructor stub
 }
 
+// here we set if the robot should move right or left towards the nearest waypoint
 bool GoToWayPoint::startCond()
 {
-	//_robot->Read();
 	double yaw = _robot->getYaw();
 	diffrence = _wpm->currWayPoint.yaw - yaw;
 
@@ -28,24 +28,20 @@ bool GoToWayPoint::startCond()
 	else if(diffrence >= 180)
 	{
 		isRight =  1;
-		//isRight =  0;
 		diffrence = 360 - diffrence;
 	}
 	else if (diffrence < -180)
 	{
 		isRight = 0;
-//		isRight = 1;
 		diffrence = 360 + diffrence;
 	}
 	else if (diffrence > 0)
 	{
-//		isRight = 1;
 		isRight = 0;
 	}
 	else
 	{
 		isRight = 1;
-//		isRight = 0;
 		diffrence = abs(diffrence);
 	}
 
@@ -60,7 +56,6 @@ bool GoToWayPoint::startCond()
 }
 bool GoToWayPoint::stopCond()
 {
-	//cout<< _robot->getYaw()<< endl;
 	if(isRight)
 	{
 		return (!(_robot->checkRange(0, diffrence * ONE_DEGREE_INDEXES)) || (abs(_robot->getYaw() - _wpm->currWayPoint.yaw) <= MAX_YAW_DIFF));
@@ -81,8 +76,4 @@ void GoToWayPoint::action()
 	{
 		_robot->setSpeed(0.0, TURN_LEFT_SPEED);
 	}
-}
-void GoToWayPoint::print()
-{
-	cout << "Robot is turning to wayPoint" << endl;
 }

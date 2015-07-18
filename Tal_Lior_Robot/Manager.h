@@ -1,13 +1,13 @@
 /*
  * Manager.h
  *
- *  Created on: Dec 21, 2014
+ *  Created on: Jun 21, 2015
  *      Author: user
  */
 
 #ifndef MANAGER_H_
 #define MANAGER_H_
-#include "Plans/PlnObstacleAvoid.h"
+#include "Plans/ObstacleAvoidPlan.h"
 #include "Robot.h"
 #include "LocalizationManager.h"
 #include "WaypointsManager.h"
