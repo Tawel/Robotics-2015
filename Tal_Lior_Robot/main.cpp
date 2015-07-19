@@ -24,7 +24,8 @@ int main()
 	ConfigurationManager ConfigMgr(CONFIGURATION_PATH);
 
 	Map map;
-	map.thickenMap(ConfigMgr.map_path, ConfigMgr.robot_width);
+
+	map.thickenMap(ConfigMgr.map_path, ConfigMgr.robot_width / 2);
 	map.createGrids(ConfigMgr.map_path, ConfigMgr.map_resolution, ConfigMgr.grid_resolution);
 
 	cout << map._original_grid.size() <<  "Grid Row" << endl;

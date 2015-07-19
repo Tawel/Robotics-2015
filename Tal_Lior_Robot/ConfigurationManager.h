@@ -18,7 +18,7 @@ using namespace std;
 class ConfigurationManager {
 public:
 	char file_data[NUM_OF_PROPERTIES][MAX_LINE_LENGTH];
-	char* map_path;
+	string map_path;
 	int start_x;
 	int start_y;
 	int yaw;
@@ -34,6 +34,8 @@ public:
 	virtual ~ConfigurationManager();
 
 	void ReadConfigurationData(const char* configurationPath);
+	void ReadConfigFile(const char* configPath);
+	void Read(const char* configPath);
 	void convertSizeToCM();
 };
 

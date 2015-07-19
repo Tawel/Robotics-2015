@@ -12,6 +12,7 @@
 #include <iostream>
 #include <vector>
 #include <set>
+#include <string>
 #include "cell.h"
 #include "ConfigurationManager.h"
 #include "wayPoint.h"
@@ -34,20 +35,18 @@ struct grid_data
 
 class Map {
 private:
-	void encodeOneStep(const char* filename, std::vector<unsigned char> image, unsigned width, unsigned height);
-	void decodeOneStep(const char* filename);
-
-//	vector<vector<grid_data> > convertMapToGrid(const char* filename, double map_resolution, double grid_resolution);
+	void encodeOneStep(string filename, std::vector<unsigned char> image, unsigned width, unsigned height);
+	void decodeOneStep(string filename);
 
 public:
 	vector<vector<grid_data> > _original_grid;
 	vector<vector<grid_data> > _thickened_grid;
 
 	Map(){}
-	vector<vector<grid_data> > convertMapToGrid(const char* filename, double map_resolution, double grid_resolution);
-	void thickenMap(const char* filename, int thickenSizeCM);
-	void createGrids(const char* originalMapFile, double map_resolution, double grid_resolution);
-	double checkNearestObs(cell point, double angle);
+	vector<vector<grid_data> > convertMapToGrid(string filename, double map_resolution, double grid_resolution);
+	void thickenMap(string filename, int thickenSizeCM);
+	void createGrids(string originalMapFile, double map_resolution, double grid_resolution);
+
 
 	virtual ~Map();
 };

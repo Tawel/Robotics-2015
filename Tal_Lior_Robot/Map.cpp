@@ -8,11 +8,11 @@
 #include "Map.h"
 #include "lodepng.h"
 #include <iostream>
-
+#include <string>
 
 //Encode from raw pixels to disk with a single function call
 //The image argument has width * height RGBA pixels or width * height * 4 bytes
-void Map::encodeOneStep(const char* filename, std::vector<unsigned char> image, unsigned width, unsigned height) {
+void Map::encodeOneStep(string filename, std::vector<unsigned char> image, unsigned width, unsigned height) {
 	//Encode the image
 	unsigned error = lodepng::encode(filename, image, width, height);
 
@@ -22,7 +22,7 @@ void Map::encodeOneStep(const char* filename, std::vector<unsigned char> image, 
 		<< lodepng_error_text(error) << std::endl;
 }
 
-void Map::decodeOneStep(const char* filename) {
+void Map::decodeOneStep(string filename) {
 	std::vector<unsigned char> image; //the raw pixels
 	unsigned width, height;
 
@@ -36,7 +36,7 @@ void Map::decodeOneStep(const char* filename) {
 
 	// image displayed as vector (RGBA..)
 }
-void Map::thickenMap(const char* filename, int thickenSizeCM) {
+void Map::thickenMap(string filename, int thickenSizeCM) {
 
 	std::vector<unsigned char> image; //the raw pixels
 	unsigned width, height;
@@ -85,7 +85,7 @@ void Map::thickenMap(const char* filename, int thickenSizeCM) {
 	encodeOneStep(THICKENED_MAP_NAME, newImage, width, height);
 }
 
-vector<vector<grid_data> > Map::convertMapToGrid(const char* filename, double map_resolution, double grid_resolution){
+vector<vector<grid_data> > Map::convertMapToGrid(string filename, double map_resolution, double grid_resolution){
 
 	std::vector<unsigned char> image;
 	unsigned width, height;
@@ -131,7 +131,7 @@ vector<vector<grid_data> > Map::convertMapToGrid(const char* filename, double ma
 	return grid;
 }
 
-void Map::createGrids(const char* originalMapFile, double map_resolution, double grid_resolution){
+void Map::createGrids(string originalMapFile, double map_resolution, double grid_resolution){
 	_original_grid = convertMapToGrid(originalMapFile,
 			map_resolution,
 			grid_resolution);
@@ -140,74 +140,6 @@ void Map::createGrids(const char* originalMapFile, double map_resolution, double
 			grid_resolution);
 }
 
-double Map::checkNearestObs(cell point, double angle){
-
-	int roundedAngle = angle;
-	if (roundedAngle % 45 < 22.5) {
-		roundedAngle = (roundedAngle/45)*45;
-	} else {
-		roundedAngle = (roundedAngle/45 + 1)*45;
-	}
-
-	int xDirection;
-	int yDirection;
-
-	switch (roundedAngle%360) {
-	case 0:
-		xDirection = 1;
-		yDirection = 0;
-		break;
-	case 45:
-		xDirection = 1;
-		yDirection = 1;
-		break;
-	case 90:
-		xDirection = 0;
-		yDirection = 1;
-		break;
-	case 135:
-		xDirection = -1;
-		yDirection = 1;
-		break;
-	case 180:
-		xDirection = -1;
-		yDirection = 0;
-		break;
-	case 225:
-		xDirection = -1;
-		yDirection = -1;
-		break;
-	case 270:
-		xDirection = 0;
-		yDirection = -1;
-		break;
-	case 315:
-		xDirection = 1;
-		yDirection = -1;
-		break;
-	default:
-		return -1; // wrong angle
-	}
-
-	int x = point.x_Coordinate;
-	int y = point.y_Coordinate;
-	int counter = 0;
-
-	while (y > 0 && x > 0 && y < _original_grid.size() && x < _original_grid[0].size()){
-		if (_original_grid[y][x].cell_color == 1) {
-			break;
-		}
-		counter++;
-		x += xDirection;
-		y += yDirection;
-	}
-
-	if (xDirection == 0 || yDirection == 0) {
-		return counter*10;
-	} else {
-		return counter*14.14215;
-	}
-}
 
 Map::~Map() {
 	// TODO Auto-generated destructor stub

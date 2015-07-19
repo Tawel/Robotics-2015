@@ -17,17 +17,20 @@ Particle::Particle(cell cell, double dYaw){
 // This function update the particle according to the deltas and the laser
 double Particle::update(double deltaX, double deltaY, double deltaTeta , LaserProxy* laser)
 {
-    // Variable Definition
-    double predBel;
-
     // Update the particle position
     _cell.x_Coordinate += deltaX;
     _cell.y_Coordinate += deltaY;
     _Teta += deltaTeta;
 
     // Guess the probability
-    predBel = _Belief * probMov(deltaX, deltaY, deltaTeta);
-    _Belief = NORMALIZE_FACTOR * predBel;
+    double byMov = probMov(deltaX, deltaY, deltaTeta);
+    _Belief = _Belief * byMov * NORMALIZE_FACTOR;
+
+    if (_Belief > 1)
+    {
+    	_Belief = 1;
+    }
+
     return _Belief;
 }
 
@@ -49,6 +52,8 @@ double Particle::probMov(double deltaX, double deltaY, double deltaTeta)
 		pro = 1;
 	return pro;
 }
+
+
 
 double Particle::getBelief()
 {
